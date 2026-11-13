@@ -33,11 +33,11 @@ function buildReels(){
   const wrap=$("#reels");
   REELS.forEach((r,i)=>{
     const col=document.createElement("div");col.className="reel-col";
-    col.innerHTML=`<div class="reel-label"><span class="eyebrow">${r.label}</span></div>
+    col.innerHTML=`<div class="reel-label"><span class="meta">${r.label}</span></div>
       <div class="reel" id="reel${i}"><div class="payline"></div><div class="strip"></div></div>
       <div class="reel-tools">
-        <button class="chip" data-lock="${i}" aria-pressed="false" title="Užrakinti būgną">🔒<span>Užrakinti</span></button>
-        ${i<2?`<button class="chip" data-custom="${i}" title="Įrašyti savo">✎<span>Savo</span></button>`:""}
+        <button class="chip" data-lock="${i}" aria-pressed="false" title="Užrakinti būgną" aria-label="Užrakinti būgną ${i+1}">🔒<span>Užrakinti</span></button>
+        ${i<2?`<button class="chip" data-custom="${i}" title="Įrašyti savo" aria-label="Įrašyti savo reikšmę ${i+1} būgnui">✎<span>Savo</span></button>`:""}
       </div>
       ${i<2?`<form class="custom" data-form="${i}" hidden><input id="custom${i}" maxlength="40" placeholder="${i?"pvz. Dizaineriai":"pvz. Dviračiai"}"><button>OK</button></form>`:""}`;
     wrap.appendChild(col);
@@ -130,30 +130,34 @@ function render(){
   const s=st.strat,n=st.niche,a=st.aud;
   const t=title();const words=t.split(" ");
   $("#ideaFrame").innerHTML=`
-    <div class="frame-top"><span class="eyebrow">Išsukta idėja</span><span class="eyebrow">${st.jackpot?"JACKPOT · 7 7 7":"Sukimas #"+(st.spins||1)}</span></div>
-    <div class="idea-brand"><span class="brand-badge">${esc(st.brand)}</span><span class="fit">Strategijos tinkamumas ${st.fit} %</span></div>
-    <h3 class="idea-title">${wordsReveal(t,[words.length-1-(a.d.split(" ").length-1)])}</h3>
-    <div class="idea-pitch">
-      <div><b>Problema</b>${esc(a.n)} ${esc(a.pain)}.</div>
-      <div><b>Sprendimas</b>${esc(st.product[0].toUpperCase()+st.product.slice(1))} – ${esc(n.pr)}.</div>
-      <div><b>Kodėl plis</b>${esc(s.y)}</div>
+    <div class="meta-line"><span class="meta">Išsukta idėja</span><span class="meta">${st.jackpot?"Jackpot · 7 7 7":"Sukimas #"+(st.spins||1)}</span></div>
+    <div class="idea-head">
+      <div><span class="label">Prekės ženklas</span><strong class="brand-name">${esc(st.brand)}</strong></div>
+      <a class="bignum" href="#strategijos" aria-label="Strategijos tinkamumas ${st.fit} % – žiūrėti visas strategijas"><span class="label">Tinkamumas ↓</span><span class="num">${st.fit}<sup>%</sup></span></a>
     </div>
-    <div class="hookcard"><span class="eyebrow" style="color:#A9C2B5">Pirmas video hook'as</span><q>${esc(n.h)}</q></div>
-    <div class="actions">
-      <button class="btn primary" id="toAi">Sugeneruok pilną planą</button>
-      <button class="btn" id="copyBtn">Kopijuoti idėją</button>
-      <button class="btn" id="againBtn">Sukti dar kartą</button>
+    <h3 class="idea-title">${wordsReveal(t,[words.length-1-(a.d.split(" ").length-1)])}</h3>
+    <dl class="pitch">
+      <div><dt>Problema</dt><dd>${esc(a.n)} ${esc(a.pain)}.</dd></div>
+      <div><dt>Sprendimas</dt><dd>${esc(st.product[0].toUpperCase()+st.product.slice(1))} – ${esc(n.pr)}.</dd></div>
+      <div><dt>Kodėl plis</dt><dd>${esc(s.y)}</dd></div>
+    </dl>
+    <figure class="hook"><figcaption class="label">Pirmas video hook'as</figcaption><blockquote>„${esc(n.h)}“</blockquote></figure>
+    <div class="links">
+      <button class="link-cta" id="toAi"><span>Sugeneruok pilną planą</span><i aria-hidden="true">↗</i></button>
+      <button class="link" id="copyBtn">Kopijuoti idėją →</button>
+      <button class="link" id="againBtn">Sukti dar kartą →</button>
     </div>`;
   const doneKey="done:"+st.brand+":"+s.id;const done=store.get(doneKey,[]);
   $("#planFrame").innerHTML=`
-    <div class="frame-top"><span class="eyebrow">Efektyviausia strategija</span><span class="eyebrow">14 dienų</span></div>
-    <span class="tag" style="display:block;margin-top:16px">${esc(s.tag)}</span>
-    <h3>${esc(s.n)}</h3>
-    <p class="why">${esc(s.w)}</p>
-    <div class="timeline" id="tl"><div class="rail"></div>${s.s.map((x,i)=>`<button class="flag" data-step="${i}" style="left:${(x[0]-1)/13*100}%" aria-label="Diena ${x[0]}"></button>`).join("")}<div class="dot" id="tlDot" style="left:0%"></div></div>
-    <div class="ticks">${[1,3,5,7,9,11,14].map(d=>`<span>D${String(d).padStart(2,"0")}</span>`).join("")}</div>
-    <ol class="steps">${s.s.map((x,i)=>`<li data-li="${i}"><label><input type="checkbox" id="st${i}" data-i="${i}" ${done.includes(i)?"checked":""}><span class="d">DIENA ${String(x[0]).padStart(2,"0")}</span><span>${esc(x[1])}</span></label></li>`).join("")}</ol>
-    <div class="kpi"><span class="eyebrow mute">Sėkmės rodiklis</span><strong>${esc(s.k)}</strong></div>`;
+    <div class="meta-line"><span class="meta">Efektyviausia strategija</span><span class="meta">${esc(s.tag)}</span></div>
+    <div class="plan-head">
+      <div><h3 class="plan-title">${esc(s.n)}</h3><p class="why">${esc(s.w)}</p></div>
+      <p class="bignum"><span class="label">Dienų planas</span><span class="num">14</span></p>
+    </div>
+    <div class="timeline" id="tl"><div class="rail"></div>${s.s.map((x,i)=>`<button class="flag" data-step="${i}" style="left:${(x[0]-1)/13*100}%" aria-label="Diena ${x[0]}: ${esc(x[1])}"></button>`).join("")}<div class="dot" id="tlDot" style="left:0%"></div></div>
+    <div class="ticks" aria-hidden="true">${[1,3,5,7,9,11,14].map(d=>`<span>D${String(d).padStart(2,"0")}</span>`).join("")}</div>
+    <ol class="steps">${s.s.map((x,i)=>`<li data-li="${i}"><label><input type="checkbox" id="st${i}" data-i="${i}" ${done.includes(i)?"checked":""}><span class="txt">${esc(x[1])}</span><span class="lead" aria-hidden="true"></span><span class="d">D${String(x[0]).padStart(2,"0")}</span></label></li>`).join("")}</ol>
+    <div class="kpi"><span class="label">Sėkmės rodiklis</span><strong>${esc(s.k)}</strong></div>`;
   setStep(0);
   $("#tl").onclick=e=>{const f=e.target.closest(".flag");if(f)setStep(+f.dataset.step)};
   $("#planFrame").querySelector(".steps").onchange=e=>{
@@ -175,20 +179,18 @@ function setStep(i){
 }
 function renderCatalog(){
   const rk=ranked(st.niche,st.aud);const max=rk[0].sc||1;
-  $("#catNote").textContent=`Surikiuota pagal tinkamumą idėjai „${title()}“. Laimėjusi strategija pažymėta žaliai.`;
-  const tags=["visos",...new Set(STRATS.map(s=>s.tag))];
+  $("#catNote").textContent=`Surikiuota pagal tinkamumą idėjai „${title()}“. Išsukta strategija paryškinta.`;
   $("#filters").innerHTML=["visos","tinkamiausios"].map(t=>`<button data-f="${t}" aria-pressed="${st.filter===t}">${t}</button>`).join("");
   let list=rk;if(st.filter==="tinkamiausios")list=rk.filter(r=>r.sc>=Math.max(1,max-1));
-  $("#grid").innerHTML=list.map(({s,sc})=>{
+  $("#grid").innerHTML=list.map(({s,sc},k)=>{
     const won=s===st.strat;const pct=won?st.fit:Math.round(40+sc/max*50);
-    return `<article class="s-card ${won?"won":""}">
-      <div class="row"><span class="tag">${esc(s.tag)}</span>${won?`<span class="won-badge">Išsukta</span>`:`<span class="tag">${pct} %</span>`}</div>
-      <h3>${esc(s.n)}</h3>
-      <div class="meter" aria-label="Tinkamumas ${pct} %"><i style="width:${pct}%"></i></div>
-      <p>${esc(s.w)}</p>
-      <details><summary>14 dienų planas</summary><ol>${s.s.map(x=>`<li><b>D${x[0]}</b> ${esc(x[1])}</li>`).join("")}</ol></details>
-      ${won?"":`<button class="btn pick" data-pick="${s.id}">Rinktis šią strategiją</button>`}
-    </article>`}).join("");
+    return `<li class="s-row ${won?"won":""}" style="--n:${k}">
+      <div class="s-line"><span class="s-idx">${String(k+1).padStart(2,"0")}</span><h3 class="s-name">${won?`<span class="mark">${esc(s.n)}</span>`:esc(s.n)}</h3><span class="lead" aria-hidden="true"></span><span class="s-pct">${won?"Išsukta · ":""}${pct}%</span></div>
+      <div class="s-bar" role="img" aria-label="Tinkamumas ${pct} %"><i style="width:${pct}%"></i></div>
+      <p class="s-desc"><b>${esc(s.tag)}</b>${esc(s.w)}</p>
+      <div class="s-foot"><details><summary>14 dienų planas</summary><ol>${s.s.map(x=>`<li><b>D${String(x[0]).padStart(2,"0")}</b><span>${esc(x[1])}</span></li>`).join("")}</ol></details>
+      ${won?`<a class="link" href="#rezultatas">Žiūrėti planą ↑</a>`:`<button class="link" data-pick="${s.id}" aria-label="Rinktis strategiją ${esc(s.n)}">Rinktis →</button>`}</div>
+    </li>`}).join("");
 }
 document.addEventListener("click",e=>{
   const f=e.target.closest("[data-f]");if(f){st.filter=f.dataset.f;renderCatalog();return}
@@ -210,7 +212,7 @@ function saveHistory(){
 }
 function renderHistory(){
   const h=store.get("hist",[]);if(h.length<2){$("#history").innerHTML="";return}
-  $("#history").innerHTML=`<span class="eyebrow mute">Ankstesni sukimai</span>`+h.slice(1).map((x,i)=>`<button data-h="${i+1}">${esc(x.b)} · ${esc(x.n)} × ${esc(x.a)}</button>`).join("");
+  $("#history").innerHTML=`<span class="label">Ankstesni sukimai</span>`+h.slice(1).map((x,i)=>`<button data-h="${i+1}">${esc(x.b)} · ${esc(x.n)} × ${esc(x.a)}</button>`).join("");
 }
 
 /* ---------- COPY ---------- */
@@ -232,13 +234,13 @@ let aiCtl=null;
 function aiKey(){return st.brand+"|"+st.niche.n+"|"+st.aud.n+"|"+st.strat.id}
 function renderAI(state){
   const box=$("#aiBox");
-  if(state==="loading"){box.innerHTML=`<div class="ai-empty"><span class="eyebrow">Generuojama · ${esc(st.brand)}</span><p>AI rašo prekės ženklo pagrindą, auditoriją, SWOT, rinkos spragą ir 30 dienų planą.</p><div class="stream" id="stream">Galvoja…</div><button class="btn" id="aiStop">Sustabdyti</button></div>`;$("#aiStop").onclick=()=>aiCtl?.abort();return}
-  if(state&&state.error){box.innerHTML=`<div class="ai-empty"><div class="err" role="status">${esc(state.error)}</div><button class="btn primary" id="aiGo">Bandyti dar kartą</button></div>`;$("#aiGo").onclick=genAI;return}
+  if(state==="loading"){box.innerHTML=`<div class="ai-empty"><div class="meta-line"><span class="meta">Generuojama</span><span class="meta">${esc(st.brand)}</span></div><p class="ai-lede">AI rašo prekės ženklo pagrindą, auditoriją, SWOT, rinkos spragą ir 30 dienų planą.</p><div class="stream" id="stream">Galvoja…</div><button class="link" id="aiStop">Sustabdyti ×</button></div>`;$("#aiStop").onclick=()=>aiCtl?.abort();return}
+  if(state&&state.error){box.innerHTML=`<div class="ai-empty"><div class="err" role="status">${esc(state.error)}</div><button class="link-cta" id="aiGo"><span>Bandyti dar kartą</span><i aria-hidden="true">↗</i></button></div>`;$("#aiGo").onclick=genAI;return}
   if(st.ai&&st.ai.key===aiKey()){box.innerHTML=deckHTML(st.ai.d);$("#aiCopy").onclick=()=>{const t=JSON.stringify(st.ai.d,null,2);navigator.clipboard?.writeText(t).then(()=>toast("Planas nukopijuotas"),()=>fallbackCopy(t))};$("#aiRe").onclick=genAI;return}
-  box.innerHTML=`<div class="ai-empty"><span class="eyebrow">Idėja: ${esc(st.brand)} · ${esc(st.strat.n)}</span>
-    <p>Paspausk ir AI parašys pilną strategijos dokumentą šiai idėjai: pozicionavimą, auditoriją, SWOT, konkurentų tipus, rinkos spragą, 5 hook'us ir 30 dienų planą.</p>
+  box.innerHTML=`<div class="ai-empty"><div class="meta-line"><span class="meta">Idėja: ${esc(st.brand)}</span><span class="meta">${esc(st.strat.n)}</span></div>
+    <p class="ai-lede">Paspausk ir AI parašys pilną strategijos dokumentą šiai idėjai: pozicionavimą, auditoriją, SWOT, konkurentų tipus, rinkos spragą, 5 hook'us ir 30 dienų planą.</p>
     ${API?"":`<div class="err" role="status">${esc(AI_OFF)}</div>`}
-    <button class="btn primary" id="aiGo" ${API?"":"disabled"}>Generuoti strategijos dokumentą</button></div>`;
+    <button class="link-cta" id="aiGo" ${API?"":"disabled"}><span>Generuoti strategijos dokumentą</span><i aria-hidden="true">↗</i></button></div>`;
   $("#aiGo").onclick=genAI;
 }
 async function genAI(){
@@ -262,18 +264,18 @@ function L(a){return Array.isArray(a)?a:[]}
 function deckHTML(d){
   const sw=d.swot||{};
   const slides=[
-   ["core","Prekės ženklo pagrindas",`<p><b>${esc(d.pozicionavimas)}</b></p><p>${esc(d.sukis)}</p><p class="tag">Vertybės: ${L(d.vertybes).map(esc).join(" · ")}</p><p class="tag">Pajamos</p><p>${esc(d.pajamos)}</p>`,true],
-   ["aud","Tikslinė auditorija",`<p>${esc(d.auditorija?.kas)}</p><p class="tag">Skausmai</p><ul>${L(d.auditorija?.skausmai).map(x=>`<li>${esc(x)}</li>`).join("")}</ul><p class="tag" style="margin-top:8px">Kur juos rasti</p><ul>${L(d.auditorija?.kur).map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`],
-   ["swot","SWOT analizė",`<div class="swot">${[["Stiprybės","stiprybes"],["Silpnybės","silpnybes"],["Galimybės","galimybes"],["Grėsmės","gresmes"]].map(([t,k])=>`<div><b>${t}</b><ul>${L(sw[k]).map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`).join("")}</div>`],
+   ["core","Prekės ženklo pagrindas",`<p><b>${esc(d.pozicionavimas)}</b></p><p>${esc(d.sukis)}</p><span class="label">Vertybės</span><p>${L(d.vertybes).map(esc).join(" · ")}</p><span class="label">Pajamos</span><p>${esc(d.pajamos)}</p>`,true],
+   ["aud","Tikslinė auditorija",`<p>${esc(d.auditorija?.kas)}</p><span class="label">Skausmai</span><ul>${L(d.auditorija?.skausmai).map(x=>`<li>${esc(x)}</li>`).join("")}</ul><span class="label">Kur juos rasti</span><ul>${L(d.auditorija?.kur).map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`],
+   ["swot","SWOT analizė",`<div class="swot">${[["Stiprybės","stiprybes"],["Silpnybės","silpnybes"],["Galimybės","galimybes"],["Grėsmės","gresmes"]].map(([t,k])=>`<div><span class="label">${t}</span><ul>${L(sw[k]).map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`).join("")}</div>`],
    ["konk","Konkurentai",`<ul>${L(d.konkurentai).map(c=>`<li><b>${esc(c.tipas)}</b> – ${esc(c.silpnybe)}</li>`).join("")}</ul>`],
    ["gap","Rinkos spraga",`<p>${esc(d.rinkos_spraga)}</p>`,true],
    ["hooks","5 video hook'ai",`<ul>${L(d.hookai).map(x=>`<li>„${esc(x)}“</li>`).join("")}</ul>`],
    ["plan","30 dienų planas",`<ul>${L(d.planas).map(p=>`<li><b>D${esc(p.diena)}</b> ${esc(p.veiksmas)}</li>`).join("")}</ul>`],
    ["kpi","Sėkmės rodikliai",`<ul>${L(d.kpi).map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`,true]
   ];
-  return `<nav class="toc" aria-label="Dokumento turinys">${slides.map((s,i)=>`<a href="#sl-${s[0]}">${String(i+1).padStart(2,"0")} ${s[1]}</a>`).join("")}</nav>
-  <div class="deck">${slides.map((s,i)=>`<article class="slide ${s[3]?"dark":""}" id="sl-${s[0]}"><div class="row" style="display:flex;justify-content:space-between"><span class="tag">${String(i+1).padStart(2,"0")} · ${esc(st.brand)}</span><a class="tag" href="#ai" style="text-decoration:none">↑ turinys</a></div><h3>${s[1]}</h3>${s[2]}</article>`).join("")}</div>
-  <div class="actions"><button class="btn" id="aiCopy">Kopijuoti planą</button><button class="btn" id="aiRe">Generuoti iš naujo</button></div>`;
+  return `<nav class="toc" id="aiToc" aria-label="Dokumento turinys">${slides.map((s,i)=>`<a href="#sl-${s[0]}">${String(i+1).padStart(2,"0")} ${s[1]}</a>`).join("")}</nav>
+  <div class="deck">${slides.map((s,i)=>`<article class="slide ${s[3]?"key":""}" id="sl-${s[0]}"><span class="slide-no" aria-hidden="true">${String(i+1).padStart(2,"0")}</span><div><div class="slide-top"><span class="meta">${esc(st.brand)}</span><a class="meta" href="#aiToc" style="text-decoration:none">↑ turinys</a></div><h3>${s[1]}</h3>${s[2]}</div></article>`).join("")}</div>
+  <div class="links"><button class="link" id="aiCopy">Kopijuoti planą →</button><button class="link" id="aiRe">Generuoti iš naujo →</button></div>`;
 }
 
 /* ---------- CONFETTI ---------- */
@@ -323,6 +325,40 @@ addEventListener("keydown",e=>{
   if(e.code==="Space"){e.preventDefault();spin()}
   if(e.key==="7"){sevenKeys+="7";if(sevenKeys.endsWith("777")){sevenKeys="";spin(true)}}else sevenKeys="";
 });
+
+/* ---------- POSTER: menu, fit, reveal, parallax, CTA ---------- */
+const menuBtn=$("#menuBtn"),nav=$("#nav");
+function setMenu(o){nav.classList.toggle("open",o);menuBtn.setAttribute("aria-expanded",o);menuBtn.firstElementChild.textContent=o?"×":"☰"}
+menuBtn.onclick=()=>setMenu(!nav.classList.contains("open"));
+nav.addEventListener("click",e=>{if(e.target.closest("a"))setMenu(false)});
+addEventListener("keydown",e=>{if(e.key==="Escape"&&nav.classList.contains("open")){setMenu(false);menuBtn.focus()}});
+
+/* Hero žodis užpildo visą plotį: telefone 2 eilutės (GREEN/LIGHT), desktop'e – viena. */
+const poster=$("#poster");
+function fitPoster(){
+  const h1=poster.parentElement,avail=h1.clientWidth;if(!avail)return;
+  h1.style.fontSize="100px";
+  const lines=getComputedStyle(poster.querySelector(".ln")).display==="block"?[...poster.querySelectorAll(".ln")]:[poster];
+  const w=Math.max(...lines.map(l=>{const r=document.createRange();r.selectNodeContents(l);return r.getBoundingClientRect().width}));
+  const size=Math.min(300,Math.max(64,100*avail/w*.995));
+  h1.style.fontSize="";document.documentElement.style.setProperty("--t-hero",size.toFixed(1)+"px");
+}
+fitPoster();document.fonts?.ready.then(fitPoster);
+let fitT;addEventListener("resize",()=>{clearTimeout(fitT);fitT=setTimeout(fitPoster,80)});
+
+if("IntersectionObserver" in window){
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12});
+  document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+  const cta=$("#ctaBar");
+  new IntersectionObserver(([e])=>cta.classList.toggle("on",!e.isIntersecting),{threshold:0}).observe($("#machine"));
+}else document.querySelectorAll(".reveal").forEach(el=>el.classList.add("in"));
+
+$("#ctaBar").onclick=()=>{document.getElementById("automatas").scrollIntoView();setTimeout(()=>spin(),reduce?0:450)};
+
+if(!reduce){
+  const ph=poster.parentElement;let ticking=false;
+  addEventListener("scroll",()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{const y=Math.min(scrollY,innerHeight);ph.style.transform=`translateY(${(y*.28).toFixed(1)}px)`;ticking=false})},{passive:true});
+}
 
 /* ---------- INIT ---------- */
 $("#heroH").innerHTML=wordsReveal("Išsuk verslo idėją ir strategiją, kuri ją išaugins.",[6]);

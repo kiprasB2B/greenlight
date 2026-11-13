@@ -5,11 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Greenlight – verslo idėjų automatas</title>
 <meta name="description" content="Išsuk viral verslo idėją: niša, auditorija ir efektyviausia augimo strategija su 14 dienų planu.">
-<meta name="theme-color" content="#F5F3E9">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230D211B'/%3E%3Ctext x='16' y='23' font-family='Arial' font-weight='900' font-size='20' text-anchor='middle' fill='%23C5F36B'%3E7%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#0D211B">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%230D211B'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='900' font-size='17' text-anchor='middle' fill='%23C5F36B'%3EG%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@200;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="tokens.css">
 <link rel="stylesheet" href="styles.css">
 <script>
   /* AI plano serverio adresas (Cloudflare Worker), pvz. "https://greenlight-api.<vardas>.workers.dev".
@@ -18,75 +19,108 @@
 </script>
 </head>
 <body>
+<a class="skip" href="#automatas">Pereiti prie automato</a>
 <canvas id="fx" aria-hidden="true"></canvas>
-<div class="wrap">
-  <header class="top" id="virsus">
-    <a class="logo" href="#virsus"><i>7</i>Greenlight</a>
-    <nav class="nav" aria-label="Skiltys">
-      <a href="#automatas">Automatas</a>
-      <a href="#rezultatas">Laimėjimas</a>
-      <a href="#strategijos">Visos strategijos</a>
-      <a href="#ai">AI planas</a>
+
+<div class="stage" id="virsus">
+  <header class="bar wrap">
+    <a class="logo" href="#virsus" aria-label="Greenlight – į viršų"><span>G</span></a>
+    <nav class="nav" id="nav" aria-label="Skiltys">
+      <a href="#automatas"><b>01</b> Automatas</a>
+      <a href="#rezultatas"><b>02</b> Laimėjimas</a>
+      <a href="#strategijos"><b>03</b> Visos strategijos</a>
+      <a href="#ai"><b>04</b> AI planas</a>
     </nav>
     <button class="sound" id="soundBtn" aria-pressed="true">Garsas: įj.</button>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav" aria-label="Meniu"><span aria-hidden="true">☰</span></button>
   </header>
 
-  <section class="hero" id="automatas">
-    <span class="eyebrow">Verslo idėjų automatas · 3 būgnai · 13 strategijų</span>
-    <h1 id="heroH"></h1>
-    <p>Pirmas būgnas išsuka nišą, antras – auditoriją. Trečias parenka augimo strategiją, kuri tai idėjai tinka geriausiai. Užrakink būgną, jei jis tau patinka, arba įrašyk savo.</p>
+  <section class="hero wrap" id="automatas" aria-labelledby="posterH">
+    <div class="hero-meta">
+      <span class="meta">Verslo idėjų automatas</span>
+      <span class="meta">3 būgnai · 13 strategijų</span>
+    </div>
+    <h1 class="poster" id="posterH" aria-label="Greenlight">
+      <span class="pl" id="poster" aria-hidden="true"><span class="ln"><i style="--i:0">G</i><i style="--i:1">R</i><i style="--i:2">E</i><i style="--i:3">E</i><i style="--i:4">N</i></span><span class="ln"><i style="--i:5">L</i><i style="--i:6">I</i><i style="--i:7">G</i><i style="--i:8">H</i><i style="--i:9">T</i></span></span>
+    </h1>
+
+    <div class="machine-zone">
+      <div class="machine" id="machine">
+        <div class="m-head">
+          <span class="meta">Įmesk idėją · trauk svirtį</span>
+          <div class="lights" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
+        </div>
+        <div class="reels" id="reels"></div>
+        <div class="m-foot">
+          <button class="spin" id="spinBtn">IŠSUK</button>
+          <small>arba <kbd>Tarpas</kbd> · <kbd>7</kbd><kbd>7</kbd><kbd>7</kbd></small>
+          <span class="counter" id="counter">Sukimų: 0</span>
+        </div>
+        <div class="jackpot" id="jackpot" aria-hidden="true"><div>7 7 7</div></div>
+      </div>
+      <div class="lever-wrap">
+        <span class="lever-hint">Trauk</span>
+        <button class="lever" id="lever" aria-label="Patraukti svirtį"><span class="base"></span><span class="arm"><span class="knob"></span></span></button>
+      </div>
+    </div>
   </section>
+</div>
 
-  <div class="machine-zone">
-    <div class="machine" id="machine">
-      <div class="m-head">
-        <span class="eyebrow">Įmesk idėją · trauk svirtį</span>
-        <div class="lights"><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
-      </div>
-      <div class="reels" id="reels"></div>
-      <div class="m-foot">
-        <button class="spin" id="spinBtn">IŠSUK</button>
-        <small>arba <kbd>Tarpas</kbd></small>
-        <span class="counter" id="counter">Sukimų: 0</span>
-      </div>
-      <div class="jackpot" id="jackpot" aria-hidden="true"><div>7 7 7</div></div>
-    </div>
-    <div class="lever-wrap">
-      <span class="lever-hint">Trauk</span>
-      <button class="lever" id="lever" aria-label="Patraukti svirtį"><span class="base"></span><span class="arm"><span class="knob"></span></span></button>
-    </div>
-  </div>
+<div class="intro wrap reveal">
+  <p class="lede" id="heroH"></p>
+  <p class="intro-text">Pirmas būgnas išsuka nišą, antras – auditoriją. Trečias parenka augimo strategiją, kuri tai idėjai tinka geriausiai. Užrakink būgną, jei jis tau patinka, arba įrašyk savo.</p>
+</div>
 
-  <section id="rezultatas">
-    <div class="sec-head">
-      <div><span class="eyebrow mute">Laimėjimas</span><h2>Tavo idėja ir jos strategija</h2></div>
+<main>
+  <section class="section wrap" id="rezultatas" aria-labelledby="h-rez">
+    <div class="sec-head reveal">
+      <span class="sec-no" aria-hidden="true">02</span>
+      <div class="sec-title"><span class="meta">Laimėjimas</span><h2 id="h-rez">Tavo idėja ir jos strategija</h2></div>
       <a class="back" href="#virsus">↑ Į automatą</a>
     </div>
     <div class="result">
-      <article class="frame" id="ideaFrame"></article>
-      <article class="frame plan" id="planFrame"></article>
+      <article class="idea" id="ideaFrame"></article>
+      <article class="plan" id="planFrame"></article>
     </div>
     <div class="history" id="history"></div>
   </section>
 
-  <section id="strategijos">
-    <div class="sec-head">
-      <div><span class="eyebrow mute">Katalogas</span><h2>Visos strategijos</h2></div>
+  <section class="section wrap" id="strategijos" aria-labelledby="h-str">
+    <div class="sec-head reveal">
+      <span class="sec-no" aria-hidden="true">03</span>
+      <div class="sec-title"><span class="meta">Katalogas</span><h2 id="h-str">Visos strategijos</h2></div>
       <a class="back" href="#virsus">↑ Į automatą</a>
     </div>
-    <p class="mute cat-note" id="catNote"></p>
-    <div class="filters" id="filters"></div>
-    <div class="grid" id="grid"></div>
+    <div class="cat-top reveal">
+      <p class="bignum bracket"><span class="label">Augimo strategijų</span><span class="num">[13<sup>⁺</sup>]</span></p>
+      <div>
+        <p class="cat-note" id="catNote"></p>
+        <div class="filters" id="filters"></div>
+      </div>
+    </div>
+    <ol class="s-list" id="grid"></ol>
   </section>
 
-  <section id="ai">
-    <div class="sec-head">
-      <div><span class="eyebrow mute">Strategijos dokumentas</span><h2>Pilnas planas su AI</h2></div>
+  <section class="section wrap" id="ai" aria-labelledby="h-ai">
+    <div class="sec-head reveal">
+      <span class="sec-no" aria-hidden="true">04</span>
+      <div class="sec-title"><span class="meta">Strategijos dokumentas</span><h2 id="h-ai">Pilnas planas su AI</h2></div>
       <a class="back" href="#virsus">↑ Į automatą</a>
     </div>
     <div id="aiBox"></div>
   </section>
-</div>
+</main>
+
+<footer class="foot wrap"><div class="foot-in">
+  <span class="meta">Greenlight · žalia šviesa tavo idėjai</span>
+  <a class="back" href="#virsus">↑ Į automatą</a>
+</div></footer>
+
+<button class="cta-bar" id="ctaBar" aria-label="Išsuk idėją – sukti automatą">
+  <span class="cta-main">Išsuk idėją</span>
+  <span class="cta-info">Tarpas · 7 7 7</span>
+  <span class="cta-sq" aria-hidden="true">↗</span>
+</button>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="data.js"></script>

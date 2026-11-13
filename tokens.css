@@ -1,0 +1,46 @@
+/* Greenlight — design tokens (vienintelė spalvų, šriftų ir mastelio vieta).
+   Paletė 60/30/10: šviesi (60) · tamsi (30) · akcentas (10, tik paspaudžiama / paryškinama). */
+:root{
+  /* 3 pagrindinės spalvos */
+  --c-light:#F5F3E9;   /* kreminė – fonas */
+  --c-dark:#0D211B;    /* tamsiai žalia – tekstas, plakato blokas */
+  --c-accent:#C5F36B;  /* lime – CTA, aktyvios būsenos, paryškinti žodžiai */
+
+  /* tų pačių spalvų atspalviai (ne naujos spalvos) */
+  --c-dark-2:#174C3A;  /* automato korpusas */
+  --c-light-2:#FBFAF4; /* būgnų langeliai */
+  --c-mute:#55645C;    /* antrinis tekstas ant šviesaus (AA 5.6:1) */
+  --c-mute-dark:#A9C2B5; /* antrinis tekstas ant tamsaus (AA 9:1) */
+  --c-line:rgba(13,33,27,.18);
+  --c-line-strong:var(--c-dark);
+  --c-line-dark:rgba(245,243,233,.22);
+
+  /* šriftai */
+  --f-display:"Inter Tight","Arial Narrow",Arial,sans-serif;
+  --f-body:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+
+  /* tipografinė skalė */
+  --t-hero:clamp(5rem,28vw,18rem);          /* perrašoma JS – užpildo visą plotį */
+  --t-h2:clamp(2.25rem,8vw,5.5rem);
+  --t-h3:clamp(1.6rem,5vw,2.6rem);
+  --t-lede:clamp(1.75rem,6.2vw,3.6rem);
+  --t-num:clamp(5.5rem,24vw,12rem);
+  --t-body:clamp(.95rem,.9rem + .25vw,1.0625rem);
+  --t-meta:clamp(.6875rem,.66rem + .1vw,.75rem); /* 11–12px */
+  --ls-meta:.16em;
+
+  /* erdvė */
+  --gutter:clamp(16px,4vw,48px);
+  --gap:clamp(12px,2.4vw,28px);
+  --section:clamp(72px,12vw,160px);
+  --maxw:1440px;
+  --item:86px;
+
+  /* judesys */
+  --ease-out:cubic-bezier(.2,.9,.1,1);
+  --ease-spring:cubic-bezier(.3,1.6,.4,1);
+
+  color-scheme:light;
+}
+@media (max-width:520px){:root{--item:78px}}

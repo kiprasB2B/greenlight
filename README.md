@@ -20,7 +20,8 @@ Svetainė: https://kiprasb2b.github.io/greenlight/
 | Failas | Paskirtis |
 | --- | --- |
 | `index.html` | Puslapio struktūra |
-| `styles.css` | Dizainas (Neo Green paletė, 60/30/10) |
+| `tokens.css` | Design tokens: spalvos, šriftai, mastelis (clamp) |
+| `styles.css` | Dizainas – „editorial poster“ stilius |
 | `data.js` | Nišos, auditorijos ir strategijos |
 | `app.js` | Būgnai, sukimas, konfeti, garsas, rezultatas, katalogas, istorija |
 
@@ -36,9 +37,12 @@ Tada atidaryk http://localhost:8000.
 
 ## Dizainas
 
-- **Spalvos (60/30/10):** kreminė `#F5F3E9` (fonas) · tamsiai žalia `#0D211B` ir miško žalia `#174C3A` (tekstas, automatas, tamsios kortelės) · lime `#C5F36B` tik tam, ką spaudžiama ar reikia paryškinti · pagalbinė smaragdinė `#3E8E68`.
-- **Šriftai:** Inter Tight 800/900 (antraštės), Inter (tekstas), JetBrains Mono (etiketės).
-- Veikia telefone (390 px be horizontalaus slinkimo), gerbia `prefers-reduced-motion`, turi matomą klaviatūros fokusą.
+„Editorial poster“ stilius: milžiniškas žodis **GREENLIGHT** per visą plotį, ant kurio užlipa automatas; dideli ploni skaičiai kaip grafika (tinkamumas %, 14 dienų, [13⁺] strategijų); sąrašai be kortelių – plonos linijos ir taškinės vedamosios linijos; prisegta CTA juosta apačioje.
+
+- **Spalvos (60/30/10):** šviesi `#F5F3E9` · tamsi `#0D211B` · akcentas lime `#C5F36B` (tik CTA, aktyvios būsenos, paryškinimai). Visos – `tokens.css`.
+- **Šriftai:** Inter Tight 900 / 200 (antraštės, skaičiai), Inter (tekstas), JetBrains Mono (meta žymos).
+- **Judesys:** „flat → poster“ įėjimas, raidžių iškilimas, scroll reveal, parallax; viskas išjungiama su `prefers-reduced-motion`.
+- Mobile first (390 px), adaptacija 768 ir 1440 px, matomas klaviatūros fokusas.
 
 ## AI planas (dar neprijungtas)
 
