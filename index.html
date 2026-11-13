@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Greenlight – verslo idėjų automatas</title>
+<meta name="description" content="Išsuk viral verslo idėją: niša, auditorija ir efektyviausia augimo strategija su 14 dienų planu.">
+<meta name="theme-color" content="#F5F3E9">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230D211B'/%3E%3Ctext x='16' y='23' font-family='Arial' font-weight='900' font-size='20' text-anchor='middle' fill='%23C5F36B'%3E7%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+<script>
+  /* AI plano serverio adresas (Cloudflare Worker), pvz. "https://greenlight-api.<vardas>.workers.dev".
+     Tuščias – AI skiltis rodo pranešimą, kad AI dar neprijungtas. */
+  window.GREENLIGHT_API = "";
+</script>
+</head>
+<body>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="wrap">
+  <header class="top" id="virsus">
+    <a class="logo" href="#virsus"><i>7</i>Greenlight</a>
+    <nav class="nav" aria-label="Skiltys">
+      <a href="#automatas">Automatas</a>
+      <a href="#rezultatas">Laimėjimas</a>
+      <a href="#strategijos">Visos strategijos</a>
+      <a href="#ai">AI planas</a>
+    </nav>
+    <button class="sound" id="soundBtn" aria-pressed="true">Garsas: įj.</button>
+  </header>
+
+  <section class="hero" id="automatas">
+    <span class="eyebrow">Verslo idėjų automatas · 3 būgnai · 13 strategijų</span>
+    <h1 id="heroH"></h1>
+    <p>Pirmas būgnas išsuka nišą, antras – auditoriją. Trečias parenka augimo strategiją, kuri tai idėjai tinka geriausiai. Užrakink būgną, jei jis tau patinka, arba įrašyk savo.</p>
+  </section>
+
+  <div class="machine-zone">
+    <div class="machine" id="machine">
+      <div class="m-head">
+        <span class="eyebrow">Įmesk idėją · trauk svirtį</span>
+        <div class="lights"><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div>
+      </div>
+      <div class="reels" id="reels"></div>
+      <div class="m-foot">
+        <button class="spin" id="spinBtn">IŠSUK</button>
+        <small>arba <kbd>Tarpas</kbd></small>
+        <span class="counter" id="counter">Sukimų: 0</span>
+      </div>
+      <div class="jackpot" id="jackpot" aria-hidden="true"><div>7 7 7</div></div>
+    </div>
+    <div class="lever-wrap">
+      <span class="lever-hint">Trauk</span>
+      <button class="lever" id="lever" aria-label="Patraukti svirtį"><span class="base"></span><span class="arm"><span class="knob"></span></span></button>
+    </div>
+  </div>
+
+  <section id="rezultatas">
+    <div class="sec-head">
+      <div><span class="eyebrow mute">Laimėjimas</span><h2>Tavo idėja ir jos strategija</h2></div>
+      <a class="back" href="#virsus">↑ Į automatą</a>
+    </div>
+    <div class="result">
+      <article class="frame" id="ideaFrame"></article>
+      <article class="frame plan" id="planFrame"></article>
+    </div>
+    <div class="history" id="history"></div>
+  </section>
+
+  <section id="strategijos">
+    <div class="sec-head">
+      <div><span class="eyebrow mute">Katalogas</span><h2>Visos strategijos</h2></div>
+      <a class="back" href="#virsus">↑ Į automatą</a>
+    </div>
+    <p class="mute cat-note" id="catNote"></p>
+    <div class="filters" id="filters"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="ai">
+    <div class="sec-head">
+      <div><span class="eyebrow mute">Strategijos dokumentas</span><h2>Pilnas planas su AI</h2></div>
+      <a class="back" href="#virsus">↑ Į automatą</a>
+    </div>
+    <div id="aiBox"></div>
+  </section>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
